@@ -51,22 +51,22 @@ class PersonList extends React.Component {
             <div className="listRow" key="header">
               <div className="listTableCell" key="id" onClick={() => this.props.reSort("id")} id="id"><b>Id</b>
                 {this.props.sortBy.field==="id" &&
-                  <img src={image} className="arrow" />
+                  <img src={image} className="arrow" alt="arrow" />
                 }
               </div>
               <div className="listTableCell" key="name" onClick={() => this.props.reSort("name")} id="name"><b>Nimi</b>
                 {this.props.sortBy.field==="name" &&
-                  <img src={image} className="arrow" />
+                  <img src={image} className="arrow" alt="arrow" />
                 }
               </div>
               <div className="listTableCell" key="email" onClick={() => this.props.reSort("email")} id="email"><b>Sähköposti</b>
                 {this.props.sortBy.field==="email" &&
-                  <img src={image} className="arrow" />
+                  <img src={image} className="arrow" alt="arrow" />
                 }
               </div>
               <div className="listTableCell" key="phone" onClick={() => this.props.reSort("phone")} id="phone"><b>Puhelin</b>
                 {this.props.sortBy.field==="phone" &&
-                  <img src={image} className="arrow" />
+                  <img src={image} className="arrow" alt="arrow" />
                 }
               </div>
             </div>
