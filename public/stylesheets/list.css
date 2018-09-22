@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+}
+.App-header {
+  background-color: #222;
+  height: 50px;
+  padding: 20px;
+  color: white;
+}
+.App-title {
+  font-size: 1.5em;
+}
+.listRow {
+	display: table-row;
+}
+.listTable {
+	display: table;
+	width: 100%;
+}
+.listTableCell {
+	display: table-cell;
+	padding: 1px;
+}
+.listFullCell {
+	position: absolute;
+	width: 100%;
+}
+.thrash {
+	width: 15px;
+	height: 15px;
+}
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+.center {
+	align: center;
+}
