@@ -42,15 +42,33 @@ class PersonList extends React.Component {
   render(){
     this.sortValues();
 
+    let image = "./pics/"+(this.props.sortBy.dir === "asc"?"uparrow.png":"downarrow.png");
+
     return (
 	  <div className="listTable" key="list">
         <div className="listRow" key="headerRow">
           <div className="listTable">
             <div className="listRow" key="header">
-              <div className="listTableCell" key="id" onClick={() => this.props.reSort("id")} id="id"><b>Id</b></div>
-              <div className="listTableCell" key="name" onClick={() => this.props.reSort("name")} id="name"><b>Nimi</b></div>
-              <div className="listTableCell" key="email" onClick={() => this.props.reSort("email")} id="email"><b>Sähköposti</b></div>
-              <div className="listTableCell" key="phone" onClick={() => this.props.reSort("phone")} id="phone"><b>Puhelin</b></div>
+              <div className="listTableCell" key="id" onClick={() => this.props.reSort("id")} id="id"><b>Id</b>
+                {this.props.sortBy.field==="id" &&
+                  <img src={image} className="arrow" />
+                }
+              </div>
+              <div className="listTableCell" key="name" onClick={() => this.props.reSort("name")} id="name"><b>Nimi</b>
+                {this.props.sortBy.field==="name" &&
+                  <img src={image} className="arrow" />
+                }
+              </div>
+              <div className="listTableCell" key="email" onClick={() => this.props.reSort("email")} id="email"><b>Sähköposti</b>
+                {this.props.sortBy.field==="email" &&
+                  <img src={image} className="arrow" />
+                }
+              </div>
+              <div className="listTableCell" key="phone" onClick={() => this.props.reSort("phone")} id="phone"><b>Puhelin</b>
+                {this.props.sortBy.field==="phone" &&
+                  <img src={image} className="arrow" />
+                }
+              </div>
             </div>
           {this.props.values && this.props.values.map(val => 
             <div className="listRow" key={val.id}>

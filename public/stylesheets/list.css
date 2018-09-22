@@ -29,6 +29,10 @@
 	width: 15px;
 	height: 15px;
 }
+.arrow {
+  width: 10px;
+  height: 10px;
+}
 a.button {
     -webkit-appearance: button;
     -moz-appearance: button;
