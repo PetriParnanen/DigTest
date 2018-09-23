@@ -1,0 +1,37 @@
+Installation guide.
+
+1. Install Node.js. You can fetch it from http://nodejs.org. From there you can also find help for installing it.
+
+2. Get code of this app from Github. Repository address: https://github.com/PetriParnanen/DigTest. It's up to you how do you want to use Git. You can run it with command line (https://git-scm.com/) or with desctop client (https://desktop.github.com/). Helps how to use git with these can be found on corresponding pages.
+
+3. After you have fetched the code you need to add dependencies. To do this you need to run 'npm install' on the same directory where the package.json is located. You can this on Node.js command prompt which was installed when you installed Node.js.
+
+4. Now you can make changes to code. You can use any text editor you wish.
+  - To start development server you just need to type 'npm start' on your Node.js command prompt while in package.json directory
+
+5. You can run test by typing 'npm test', but as right now there are only default tests. So not really helping anyone.
+
+6. Production deployment. Copied from create-react-app's readme:
+
+## Deployment
+
+`npm run build` creates a `build` directory with a production build of your app. Set up your favorite HTTP server so that a visitor to your site is served `index.html`, and requests to static paths like `/static/js/main.<hash>.js` are served with the contents of the `/static/js/main.<hash>.js` file.
+
+### Static Server
+
+For environments using [Node](https://nodejs.org/), the easiest way to handle this would be to install [serve](https://github.com/zeit/serve) and let it handle the rest:
+
+```sh
+npm install -g serve
+serve -s build
+```
+
+The last command shown above will serve your static site on the port **5000**. Like many of [serve](https://github.com/zeit/serve)’s internal settings, the port can be adjusted using the `-p` or `--port` flags.
+
+Run this command to get a full list of the options available:
+
+```sh
+serve -h
+```
+
+7. Watch happy users to use this app.
