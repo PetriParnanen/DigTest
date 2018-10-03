@@ -71,8 +71,8 @@ class AddNew extends React.Component {
           </div>
         </div>
         <div className="listRow" key="button">
-          <a className="button center" onClick={this.savePerson}>Tallenna</a>{" "}
-          <Link to="/" className="button center">Peruuta</Link>
+          <button type="button" onClick={this.savePerson}>Tallenna</button>{" "}
+          <Link to="/"><button type="button">Peruuta</button></Link>
         </div>
       </div>
     )

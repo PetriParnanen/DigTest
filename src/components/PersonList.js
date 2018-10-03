@@ -90,7 +90,7 @@ class PersonList extends React.Component {
           </div>
         </div>
       	<div className="listRow" key="add">
-      	  <div className="listTableCell"><br /><Link to="/addNew" className="button center">Lisää uusi</Link></div>
+      	  <div className="listTableCell"><br /><Link to="/addNew"><button type="button">Lisää uusi</button></Link></div>
       	</div>
       </div>
 
