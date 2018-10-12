@@ -1,6 +1,7 @@
 import React from "react";
 import {Link, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
+import { FormErrors } from './FormErrors';
 
 class AddNew extends React.Component {
   constructor(props){
@@ -11,7 +12,11 @@ class AddNew extends React.Component {
       name: "",
       email: "",
       phone: "",
-      error: ""
+      formErrors: {name:"", email:"", phone:""},
+      nameValid: false,
+      emailValid: false,
+      phoneValid: false,
+      formValid: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -19,25 +24,59 @@ class AddNew extends React.Component {
   }
 
   onChange = (e) => {
-  	this.setState({ [e.target.name]: e.target.value, error: e.target.validationMessage });
+    const name = e.target.name;
+    const value = e.target.value;
+  	this.setState({ [name]: value }, 
+        () => { this.validateField(name, value) });
+  }
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let nameValid = this.state.nameValid;
+    let phoneValid = this.state.phoneValid;
+
+    switch(fieldName) {
+      case 'email':
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        if (value.length >= 1){
+          fieldValidationErrors.email = emailValid ? '' : 'Sähköposti on virheellinen';
+        } else {
+          fieldValidationErrors.email = 'Sähköposti on pakollinen';
+        }
+        break;
+      case 'name':
+        nameValid = value.length >= 1;
+        fieldValidationErrors.name = nameValid ? '': 'Nimi on pakollinen';
+        break;
+      case 'phone':
+        phoneValid = value.match(/^[\d ]+$/);
+        if (value.length >= 1){
+          fieldValidationErrors.phone = phoneValid ? '' : 'Puhelin numero on virheellinen';
+        } else {
+          fieldValidationErrors.phone = 'Puhelin numero on pakollinen';
+        }
+        break;
+      default:
+        break;
+    }
+    this.setState({formErrors: fieldValidationErrors,
+              emailValid: emailValid,
+              nameValid: nameValid,
+              phoneValid: phoneValid
+
+    }, this.validateForm);
+  }
+
+  validateForm() {
+    this.setState({formValid: this.state.emailValid && this.state.nameValid && this.state.phoneValid});
   }
 
   savePerson = () => {
-
-  	//tarkistetaan pakolliset tiedot ja onko email/puhelin oikein kirjoitettuja
-  	if (this.state.name === null || this.state.name === "" ||
-  	  this.state.email === null || this.state.email === "" ||
-  	  this.state.phone === null || this.state.phone === ""){
-  	  this.setState({error: "Kaikki kentät ovat pakollisia"});
-  	} else if (!/^[\w.]+@[\w.]+.\w{2,4}$/.test(this.state.email)) {
-  		this.setState({error: "Virheellinen sähköposti osoite"})
-  	} else if (!/^[\d ]+$/.test(this.state.phone)){
-  		this.setState({error: "Virheellinen puhelin numero"})
-  	} else {
-      const { error, toDash, ...newPerson } = this.state;
-      this.props.saveNew(newPerson);
-      this.setState({toDash: true});
-    }
+	
+    const { error, toDash, ...newPerson } = this.state;
+    this.props.saveNew(newPerson);
+    this.setState({toDash: true});
   }
 
   render(){
@@ -47,34 +86,28 @@ class AddNew extends React.Component {
     }
 
     return (
-      <div className="listTable" key="add">
-        <div className="listRow" key="error">
-          <div className="listTableCell"><font color="red">{this.state.error}</font></div>
+      <form onSubmit={this.savePerson}>
+        <div className="panel panel-default">
+          <FormErrors formErrors={this.state.formErrors} />
         </div>
-        <div className="listRow" key="form">
-          <div className="listTableCell" key="form">
-            <div className="listTable">
-              <div className="listRow" key="name">
-                <div className="listTableCell" key="label">Nimi:</div>
-                <div className="listTableCell" key="field"><input name="name" type="text" value={this.state.name} onChange={this.onChange} required /></div>
-              </div>
-              <div className="listRow" key="email">
-                <div className="listTableCell" key="label">Sähköposti:</div>
-                <div className="listTableCell" key="field"><input name="email" type="email" value={this.state.email} onChange={this.onChange} required /></div>
-              </div>
-              <div className="listRow" key="phone">
-                <div className="listTableCell" key="label">Puhelin:</div>
-                <div className="listTableCell" key="field"><input name="phone" type="text" value={this.state.phone} 
-                  pattern="[0-9 ]{8,12}" placeholder="Muodossa 123 123 123" onChange={this.onChange} required /></div>
-              </div>
-            </div>
-          </div>
+        <div className="row" key="name">
+          <label htmlFor="newName">Nimi</label>
+          <input className="form-control" name="name" id="newName" type="text" value={this.state.name} onChange={this.onChange} required />
         </div>
-        <div className="listRow" key="button">
-          <button type="button" onClick={this.savePerson}>Tallenna</button>{" "}
-          <Link to="/"><button type="button">Peruuta</button></Link>
+        <div className="row" key="email">
+          <label htmlFor="newEmail">Sähköposti</label>
+          <input className="form-control" name="email" id="newEmail" type="email" value={this.state.email} onChange={this.onChange} required />
         </div>
-      </div>
+        <div className="row" key="phone">
+          <label htmlFor="newPhone">Puhelin</label>
+          <input className="form-control" name="phone" id="newPhone" type="text" value={this.state.phone} 
+            pattern="[0-9 ]{8,12}" placeholder="Muodossa 123 123 123" onChange={this.onChange} required /><br /><br />
+        </div>
+        <div className="row" key="button">
+          <button type="button" className="btn btn-primary" disabled={!this.state.formValid} onClick={this.savePerson}>Tallenna</button>{" "}
+          <Link to="/"><button className="btn btn-secondary" type="button">Peruuta</button></Link>
+        </div>
+      </form>
     )
   }
 }

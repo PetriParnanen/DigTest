@@ -67,14 +67,16 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Henkilölista</h1>
         </header>
-        
-        <font color="red">{this.state.error}</font>
- 
+        <div className="container">
+          <div className="row">
+            <font color="red">{this.state.error}</font>
+          </div>
         <main>
           <Route exact path='/' render={(props) => (<ListPerson {...props} values={this.state.values} onEdit={this.onEdit} deleteRow={this.deleteRow}
             sortBy={this.state.sortBy} reSort={this.reSort} /> )} />
           <Route path='/addNew' render={(props) => (<AddNew {...props} saveNew={this.saveNew} /> )} />
         </main>
+        </div>
       </div>
     );
   }
