@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // this gives either editable text field or just value field
 export const Editable = ({editField, field, rowId, value, onChange, setEdit}) => {
@@ -21,3 +21,5 @@ export const Editable = ({editField, field, rowId, value, onChange, setEdit}) =>
     )
   }
 }
+
+export default Editable;
