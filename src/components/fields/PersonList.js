@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Button, Image } from 'semantic-ui-react';
 import { Editable } from './Editable';
 import { SortValues } from '../scripts/Sorter';
 
@@ -16,61 +16,63 @@ class PersonList extends React.Component {
     }
   }
 
-  //sets field so it can be edited
-  setEditable = (rowId, field) => {
-    this.setState({editable: {id: rowId, field: field}, error:""});
+  // sets field so it can be edited
+  setEditable = (id, field) => {
+    this.setState( { editable: {id, field} } );
   }
 
   render(){
-    this.values = SortValues(this.props.values, this.props.sortBy);
+    const { oldValues, sortBy, reSort, onEdit, deleteRow } = this.props;
+    const { editable } = this.state;
+    this.values = SortValues(oldValues, sortBy);
 
-    let image = "./pics/"+(this.props.sortBy.dir === "asc"?"uparrow.png":"downarrow.png");
+    const image = `./pics/${ sortBy.dir === "asc"?"uparrow.png":"downarrow.png" }`;
 
     return (
       <div>
         <Grid columns={5}>
           <Grid.Row key="header">
-            <Grid.Column width={1} className="hover" onClick={() => this.props.reSort("id")}><b>Id</b>{"  "}
-              {this.props.sortBy.field==="id" &&
-                <img src={image} className="arrow" alt="arrow" />
+            <Grid.Column width={1} className="hover" onClick={() => reSort("id")}><b>Id</b>{"  "}
+              {sortBy.field==="id" &&
+                <Image src={image} className="arrow" alt="arrow" inline="true" />
               }
             </Grid.Column>
-            <Grid.Column width={5} className="hover" onClick={() => this.props.reSort("name")}><b>Nimi</b>{"  "}
-              {this.props.sortBy.field==="name" &&
-                <img src={image} className="arrow" alt="arrow" />
+            <Grid.Column width={5} className="hover" onClick={() => reSort("name")}><b>Nimi</b>{"  "}
+              {sortBy.field==="name" &&
+                <Image src={image} className="arrow" alt="arrow" inline="true" />
               }
             </Grid.Column>
-            <Grid.Column width={5} className="hover" onClick={() => this.props.reSort("email")}><b>Sähköposti</b>{"  "}
-              {this.props.sortBy.field==="email" &&
-                <img src={image} className="arrow" alt="arrow" />
+            <Grid.Column width={5} className="hover" onClick={() => reSort("email")}><b>Sähköposti</b>{"  "}
+              {sortBy.field==="email" &&
+                <Image src={image} className="arrow" alt="arrow" inline="true" />
               }
             </Grid.Column>
-            <Grid.Column width={3} className="hover" onClick={() => this.props.reSort("phone")}><b>Puhelin</b>{"  "}
-              {this.props.sortBy.field==="phone" &&
-                <img src={image} className="arrow" alt="arrow" />
+            <Grid.Column width={3} className="hover" onClick={() => reSort("phone")}><b>Puhelin</b>{"  "}
+              {sortBy.field==="phone" &&
+                <Image src={image} className="arrow" alt="arrow" inline="true" />
               }
             </Grid.Column>
           </Grid.Row>
-        {this.props.values && this.props.values.map(val => (
+        {this.values && this.values.map(val => (
           <Grid.Row key={val.id} className="noPadding"> 
             <Grid.Column key="id" width={1}>{val.id}</Grid.Column>
             <Grid.Column key="name" width={5}>
               <Editable 
-                editField={this.state.editable} field={"name"} rowId={val.id} value={val.name} 
-                onChange={this.props.onEdit} setEdit={this.setEditable} />
+                editField={editable} field="name" rowId={val.id} value={val.name} 
+                onChange={onEdit} setEdit={this.setEditable} />
             </Grid.Column>
             <Grid.Column key="email" width={5}>
               <Editable 
-                editField={this.state.editable} field={"email"} rowId={val.id} value={val.email} 
-                onChange={this.props.onEdit} setEdit={this.setEditable} />
+                editField={editable} field="email" rowId={val.id} value={val.email} 
+                onChange={onEdit} setEdit={this.setEditable} />
             </Grid.Column>
             <Grid.Column key="phone" width={3}>
               <Editable 
-                editField={this.state.editable} field={"phone"} rowId={val.id} value={val.phone} 
-                onChange={this.props.onEdit} setEdit={this.setEditable} />
+                editField={editable} field="phone" rowId={val.id} value={val.phone} 
+                onChange={onEdit} setEdit={this.setEditable} />
             </Grid.Column>
             <Grid.Column key="delete" width={2}>
-              <img src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => this.props.deleteRow(val.id)} />
+              <Image src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => deleteRow(val.id)} />
             </Grid.Column>
           </Grid.Row>
         ))}
@@ -86,11 +88,11 @@ class PersonList extends React.Component {
 }
 
 PersonList.propTypes = {
-	values: PropTypes.array,
-	onEdit: PropTypes.func,
-	deleteRow: PropTypes.func,
-	sortBy: PropTypes.object,
-	reSort: PropTypes.func,
+	oldValues: PropTypes.instanceOf(Array).isRequired,
+	onEdit: PropTypes.func.isRequired,
+	deleteRow: PropTypes.func.isRequired,
+	sortBy: PropTypes.instanceOf(Object).isRequired,
+	reSort: PropTypes.func.isRequired,
 }
 
 export default PersonList;

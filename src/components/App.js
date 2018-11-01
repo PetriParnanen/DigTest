@@ -10,10 +10,10 @@ class App extends Component {
 
     this.values = [];
 
-    // state will keep sort terms, which table is under edit and values shown
+    // state will keep sort terms, which table is under edit and values shown. gotta remove error
     this.state = {
       sortBy: {dir: 'desc', field: 'id'},
-      values: preData,
+      values: preData
     }
 
     this.reSort = this.reSort.bind(this);
@@ -21,46 +21,47 @@ class App extends Component {
 
   // save new sort order
   reSort = (field) => {
-    if (this.state.sortBy.field !== field){
-      this.setState({sortBy: {dir: 'desc', field: field }})
+    const { sortBy } = this.state;
+    if (sortBy.field !== field){
+      this.setState({sortBy: {dir: 'desc', field }})
     } else {
-      const newDir = (this.state.sortBy.dir==="desc"?"asc":"desc");
-      this.setState({sortBy: {dir: newDir, field: field}})
+      const newDir = (sortBy.dir==="desc"?"asc":"desc");
+      this.setState({sortBy: {dir: newDir, field }})
     }
   }
 
   // delete row
   // Will remove by filtering out the deletable row and save rest back to state
   deleteRow = (rowId) => {
-    const newValues = this.state.values.filter(a => a.id !== rowId);
+    const { values } = this.state;
+    const newValues = values.filter(a => a.id !== rowId);
     this.setState({values: newValues});
-  }
-
-  // sets field so it can be edited
-  setEditable = (rowId, field) => {
-    this.setState({editable: {id: rowId, field: field}, error:""});
   }
 
   onEdit = (rowId, field, e) => {
     // this works fine with this small list, but this ain't probably the best solution for bigger lists
-    const newValues = this.state.values;
-    newValues.find(a => a.id === rowId)[field] = e.target.value;
+    const { values } = this.state;
+    values.find(a => a.id === rowId)[field] = e.target.value;
 
-    this.setState({values: newValues, error: e.target.validationMessage});
+    this.setState({values});
   }
 
   // will save new row to values
-  saveNew = (newPerson) => {
+  saveNew = (person) => {
+    const newPerson = person;
+    
     // getting the biggest id and add one
-    const newValues = this.state.values;
-    newPerson.id = Math.max(...newValues.map((e) => e.id))+1;
+    const { values } = this.state;
+    newPerson.id = Math.max(...values.map((e) => e.id))+1;
 
     // add new person to list and save new list
-    newValues.push(newPerson);
-    this.setState({values: newValues});
+    values.push(newPerson);
+    this.setState({values});
   }
 
   render() {
+
+    const { values, sortBy } = this.state;
 
     return (
       <div className="App">
@@ -68,12 +69,9 @@ class App extends Component {
           <h1 className="App-title">Henkilölista</h1>
         </header>
         <div className="ui container">
-          <div className="row">
-            <font color="red">{this.state.error}</font>
-          </div>
         <main>
-          <Route exact path='/' render={(props) => (<ListPerson {...props} values={this.state.values} onEdit={this.onEdit} deleteRow={this.deleteRow}
-            sortBy={this.state.sortBy} reSort={this.reSort} /> )} />
+          <Route exact path='/' render={(props) => (<ListPerson {...props} oldValues={values} onEdit={this.onEdit} deleteRow={this.deleteRow}
+            sortBy={sortBy} reSort={this.reSort} /> )} />
           <Route path='/addNew' render={(props) => (<AddNew {...props} addNew={this.saveNew} /> )} />
         </main>
         </div>

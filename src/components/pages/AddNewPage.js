@@ -4,8 +4,9 @@ import AddNewForm from '../forms/AddNewForm';
 
 class AddNewPage extends React.Component {
   submit = (data) => {
-    this.props.addNew(data);
-    this.props.history.push("/");
+    const { addNew, history } = this.props;
+    addNew(data);
+    history.push("/");
     // this.props.addNew(data).then(() => this.props.history.push("/")); waiting for database
   }
 
