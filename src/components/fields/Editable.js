@@ -24,7 +24,7 @@ export const Editable = ({editField, field, rowId, value, onChange, setEdit}) =>
 Editable.propTypes = {
   editField: PropTypes.instanceOf(Object).isRequired,
   field: PropTypes.string.isRequired,
-  rowId: PropTypes.string.isRequired,
+  rowId: PropTypes.number.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   setEdit: PropTypes.func.isRequired

@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import preData from './generatedValues.json';
 import AddNew from './pages/AddNewPage';
 import ListPerson from './fields/PersonList';
+import { ValidatePerson } from './forms/AddNewForm';
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class App extends Component {
     // state will keep sort terms, which table is under edit and values shown. gotta remove error
     this.state = {
       sortBy: {dir: 'desc', field: 'id'},
-      values: preData
+      values: preData,
+      errors: {}
     }
 
     this.reSort = this.reSort.bind(this);
@@ -39,17 +41,21 @@ class App extends Component {
   }
 
   onEdit = (rowId, field, e) => {
-    // this works fine with this small list, but this ain't probably the best solution for bigger lists
-    const { values } = this.state;
-    values.find(a => a.id === rowId)[field] = e.target.value;
+    const { values, errors } = this.state;
+    const newPerson = values.find(a => a.id === rowId);
+    newPerson[field] = e.target.value;
 
-    this.setState({values});
+
+    // go through all fields and check errors?
+    errors[newPerson.id] = ValidatePerson(newPerson);
+
+    this.setState({ values, errors });
   }
 
   // will save new row to values
   saveNew = (person) => {
     const newPerson = person;
-    
+
     // getting the biggest id and add one
     const { values } = this.state;
     newPerson.id = Math.max(...values.map((e) => e.id))+1;
@@ -61,7 +67,7 @@ class App extends Component {
 
   render() {
 
-    const { values, sortBy } = this.state;
+    const { values, sortBy, errors } = this.state;
 
     return (
       <div className="App">
@@ -71,7 +77,7 @@ class App extends Component {
         <div className="ui container">
         <main>
           <Route exact path='/' render={(props) => (<ListPerson {...props} oldValues={values} onEdit={this.onEdit} deleteRow={this.deleteRow}
-            sortBy={sortBy} reSort={this.reSort} /> )} />
+            sortBy={sortBy} reSort={this.reSort} errors={errors} /> )} />
           <Route path='/addNew' render={(props) => (<AddNew {...props} addNew={this.saveNew} /> )} />
         </main>
         </div>

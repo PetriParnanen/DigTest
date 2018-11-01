@@ -5,6 +5,16 @@ import Validator from 'validator';
 import PropTypes from 'prop-types';
 import InlineError from '../fields/InlineError';
 
+export const ValidatePerson = (data) => {
+  const errors = {};
+  if (!data.name) errors.name = "Nimi on pakollinen";
+  if (!Validator.isEmail(data.email)) errors.email = "Virheellinen email";
+  if (!data.phone.match(/^[\d ]+$/)){
+    errors.phone = "Virheellinen puhelin";
+  }
+  return errors;
+};
+
 class AddNewForm extends React.Component {
   constructor(props){
   	super(props);
@@ -30,7 +40,7 @@ class AddNewForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { data } = this.state;
-    const errors = this.validate(data);
+    const errors = ValidatePerson(data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0){
       // this.setState({ loading: true }); waiting for database
@@ -40,16 +50,6 @@ class AddNewForm extends React.Component {
       submit(data);
       //  .catch(err => this.setState({ errors: err.response.data.errors, loading: false })); waiting for database
     }
-  };
-
-  validate = (data) => {
-    const errors = {};
-    if (!data.name) errors.name = "Nimi on pakollinen";
-    if (!Validator.isEmail(data.email)) errors.email = "Virheellinen email";
-    if (!data.phone.match(/^[\d ]+$/)){
-      errors.phone = "Virheellinen puhelin";
-    }
-    return errors;
   };
 
   render() {

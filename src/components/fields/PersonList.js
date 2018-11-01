@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Grid, Button, Image } from 'semantic-ui-react';
 import { Editable } from './Editable';
 import { SortValues } from '../scripts/Sorter';
+import InlineError from './InlineError';
 
 class PersonList extends React.Component {
   constructor(props){
@@ -22,7 +23,7 @@ class PersonList extends React.Component {
   }
 
   render(){
-    const { oldValues, sortBy, reSort, onEdit, deleteRow } = this.props;
+    const { oldValues, sortBy, reSort, onEdit, deleteRow, errors } = this.props;
     const { editable } = this.state;
     this.values = SortValues(oldValues, sortBy);
 
@@ -34,22 +35,22 @@ class PersonList extends React.Component {
           <Grid.Row key="header">
             <Grid.Column width={1} className="hover" onClick={() => reSort("id")}><b>Id</b>{"  "}
               {sortBy.field==="id" &&
-                <Image src={image} className="arrow" alt="arrow" inline="true" />
+                <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
             <Grid.Column width={5} className="hover" onClick={() => reSort("name")}><b>Nimi</b>{"  "}
               {sortBy.field==="name" &&
-                <Image src={image} className="arrow" alt="arrow" inline="true" />
+                <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
             <Grid.Column width={5} className="hover" onClick={() => reSort("email")}><b>Sähköposti</b>{"  "}
               {sortBy.field==="email" &&
-                <Image src={image} className="arrow" alt="arrow" inline="true" />
+                <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
             <Grid.Column width={3} className="hover" onClick={() => reSort("phone")}><b>Puhelin</b>{"  "}
               {sortBy.field==="phone" &&
-                <Image src={image} className="arrow" alt="arrow" inline="true" />
+                <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
           </Grid.Row>
@@ -60,16 +61,22 @@ class PersonList extends React.Component {
               <Editable 
                 editField={editable} field="name" rowId={val.id} value={val.name} 
                 onChange={onEdit} setEdit={this.setEditable} />
+                { errors[val.id] && errors[val.id].name && 
+                  <InlineError text={errors[val.id].name} />}
             </Grid.Column>
             <Grid.Column key="email" width={5}>
               <Editable 
                 editField={editable} field="email" rowId={val.id} value={val.email} 
                 onChange={onEdit} setEdit={this.setEditable} />
+                { errors[val.id] && errors[val.id].email && 
+                  <InlineError text={errors[val.id].email} />}
             </Grid.Column>
             <Grid.Column key="phone" width={3}>
               <Editable 
                 editField={editable} field="phone" rowId={val.id} value={val.phone} 
                 onChange={onEdit} setEdit={this.setEditable} />
+                { errors[val.id] && errors[val.id].phone && 
+                  <InlineError text={errors[val.id].phone} />}
             </Grid.Column>
             <Grid.Column key="delete" width={2}>
               <Image src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => deleteRow(val.id)} />
@@ -93,6 +100,7 @@ PersonList.propTypes = {
 	deleteRow: PropTypes.func.isRequired,
 	sortBy: PropTypes.instanceOf(Object).isRequired,
 	reSort: PropTypes.func.isRequired,
+  errors: PropTypes.instanceOf(Object).isRequired
 }
 
 export default PersonList;
