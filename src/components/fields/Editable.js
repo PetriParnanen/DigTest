@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Input } from 'semantic-ui-react';
 
 // this gives either editable text field or just value field
 export const Editable = ({editField, field, rowId, value, onChange, setEdit}) => {
@@ -8,10 +9,10 @@ export const Editable = ({editField, field, rowId, value, onChange, setEdit}) =>
     return (
       <div key={field}>
       {field === 'phone' ? (
-          <input type={type} name={field} value={value} placeholder="Muodossa 123 123 123"
+          <Input type={type} name={field} value={value} placeholder="Muodossa 123 123 123"
             onChange={(e) => onChange(rowId, field, e)} onBlur={() => setEdit("", "")} required />
       ) : (
-        <input type={type} name={field} value={value} onChange={(e) => onChange(rowId, field, e)} onBlur={() => setEdit("", "")} required />
+        <Input type={type} name={field} value={value} onChange={(e) => onChange(rowId, field, e)} onBlur={() => setEdit("", "")} required />
       )}
       </div>
     )

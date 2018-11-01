@@ -46,7 +46,7 @@ class App extends Component {
     newPerson[field] = e.target.value;
 
 
-    // go through all fields and check errors?
+    // error check
     errors[newPerson.id] = ValidatePerson(newPerson);
 
     this.setState({ values, errors });
