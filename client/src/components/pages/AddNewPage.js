@@ -6,7 +6,7 @@ class AddNewPage extends React.Component {
   submit = (data) => {
     const { addNew, history } = this.props;
     addNew(data);
-    history.push("/");
+    history.push("/persons");
     // this.props.addNew(data).then(() => this.props.history.push("/")); waiting for database
   }
 

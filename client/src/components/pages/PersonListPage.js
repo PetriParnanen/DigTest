@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
-import preData from './generatedValues.json';
-import AddNew from './pages/AddNewPage';
-import ListPerson from './fields/PersonList';
-import { ValidatePerson } from './forms/AddNewForm';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as actions from '../../actions/auth';
+import preData from '../generatedValues.json';
+import AddNew from '../pages/AddNewPage';
+import ListPerson from '../fields/PersonList';
+import { ValidatePerson } from '../forms/AddNewForm';
 
-class App extends Component {
+class PersonListPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -68,22 +71,27 @@ class App extends Component {
   render() {
 
     const { values, sortBy, errors } = this.state;
+    const { logout } = this.props;
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Henkilölista</h1>
-        </header>
-        <div className="ui container">
         <main>
-          <Route exact path='/' render={(props) => (<ListPerson {...props} oldValues={values} onEdit={this.onEdit} deleteRow={this.deleteRow}
-            sortBy={sortBy} reSort={this.reSort} errors={errors} /> )} />
-          <Route path='/addNew' render={(props) => (<AddNew {...props} addNew={this.saveNew} /> )} />
+         	<Route exact path='/persons' render={(props) => (<ListPerson {...props} oldValues={values} onEdit={this.onEdit} deleteRow={this.deleteRow}
+            sortBy={sortBy} reSort={this.reSort} errors={errors} logout={logout} /> )} />
+          	<Route exact path='/persons/addNew' render={(props) => (<AddNew {...props} addNew={this.saveNew} /> )} />
         </main>
-        </div>
-      </div>
     );
   }
 }
 
-export default App;
+PersonListPage.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired,
+	logout: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state){
+	return {
+		isAuthenticated: !!state.user.token
+	}	
+}
+
+export default connect(mapStateToProps, { logout: actions.logout })(PersonListPage);

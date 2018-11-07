@@ -8,11 +8,11 @@ import InlineError from './InlineError';
 
 class PersonList extends React.Component {
   constructor(props){
-	super(props);
+    super(props);
 
-	this.values=[];
+    this.values=[];
 
-	this.state ={
+    this.state ={
   	  editable: {},
     }
   }
@@ -23,7 +23,7 @@ class PersonList extends React.Component {
   }
 
   render(){
-    const { oldValues, sortBy, reSort, onEdit, deleteRow, errors } = this.props;
+    const { oldValues, sortBy, reSort, onEdit, deleteRow, errors, logout } = this.props;
     const { editable } = this.state;
     this.values = SortValues(oldValues, sortBy);
 
@@ -31,6 +31,7 @@ class PersonList extends React.Component {
 
     return (
       <div>
+        <div>Tämä lista ei ole kannassa vaan säilytetään vain state:ssa</div>
         <Grid columns={5}>
           <Grid.Row key="header">
             <Grid.Column width={1} className="hover" onClick={() => reSort("id")}><b>Id</b>{"  "}
@@ -85,7 +86,8 @@ class PersonList extends React.Component {
         ))}
           <Grid.Row columns={1} key="button">
             <Grid.Column key="button">
-              <Link to="/addNew"><Button primary>Lisää uusi</Button></Link>
+              <Link to="/persons/addNew"><Button primary>Lisää uusi</Button></Link>
+              <button className="ui button secondary" onClick={ () => logout()}>Kirjaudu ulos</button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -100,7 +102,8 @@ PersonList.propTypes = {
 	deleteRow: PropTypes.func.isRequired,
 	sortBy: PropTypes.instanceOf(Object).isRequired,
 	reSort: PropTypes.func.isRequired,
-  errors: PropTypes.instanceOf(Object).isRequired
+  errors: PropTypes.instanceOf(Object).isRequired,
+  logout: PropTypes.func.isRequired
 }
 
 export default PersonList;

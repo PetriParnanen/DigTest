@@ -18,7 +18,7 @@ export const Editable = ({editField, field, rowId, value, onChange, setEdit}) =>
     )
   }
   return (
-    <div key={field} role="button" onClick={() => setEdit(rowId, field)} onKeyPress={() => setEdit(rowId, field)} tabIndex={0}>{value}</div>
+    <div key={field} role="button" onClick={() => setEdit(rowId, field)} onKeyPress={() => setEdit(rowId, field)} tabIndex={0}>{value ? value : (<font color='red'>anna validi arvo</font>) }</div>
   )
 }
 
