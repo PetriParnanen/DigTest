@@ -1,11 +1,12 @@
-import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 
-const from = '"scrap" <scrap@scrap.com>';
+const from = '"PMP Data" <pemipa.data@gmail.com>';
 
 function setup() {
 	return nodemailer.createTransport({
-		host: process.env.EMAIL_HOST,
-		port: process.env.EMAIL_PORT,
+		service: 'Gmail',
+		//host: process.env.EMAIL_HOST,
+		//port: process.env.EMAIL_PORT,
 		auth: {
 			user: process.env.EMAIL_USER,
 			pass: process.env.EMAIL_PASS
@@ -13,12 +14,12 @@ function setup() {
 	});
 }
 
-export function sendConfirmationEmail(user) {
+var _sendConfirmationEmail = function(user) {
 	const tranport = setup();
 	const email = {
 		from,
 		to: user.email,
-		subject: "Welcome to scrap",
+		subject: "Welcome to personal contactbook",
 		text: `
 			Welcome, confirm you email.
 			
@@ -27,4 +28,25 @@ export function sendConfirmationEmail(user) {
 	}
 
 	tranport.sendMail(email);
-}
+};
+
+var _sendResetPasswordRequest = function(user) {
+	const tranport = setup();
+	const email = {
+		from,
+		to: user.email,
+		subject: "Reset password",
+		text: `
+			To reset password follow this link
+			
+			${user.generateResetPasswordLink()}
+			`
+	}
+
+	tranport.sendMail(email);
+};
+
+module.exports = {
+	sendConfirmationEmail : _sendConfirmationEmail,
+	sendResetPasswordRequest : _sendResetPasswordRequest
+};

@@ -8,7 +8,8 @@ import { confirm } from '../../actions/auth';
 class ConfirmationPage extends React.Component {
 	state = {
 		loading: true,
-		success: false
+		success: false,
+		errors: {}
 	};
 
 	componentDidMount() {
@@ -18,14 +19,14 @@ class ConfirmationPage extends React.Component {
 	}
 
 	render() {
-		const { loading, success } = this.state;
+		const { loading, success, errors } = this.state;
 
 		return (
 			<div>
 				{ loading && (
 					<Message icon>
 						<Icon name="circle notched" loading />
-						<Message.Header>Sähköpostin vahvistus</Message.Header>
+						<Message.Header>Tarkistamassa sähköpostiosoitetta</Message.Header>
 					</Message>
 				)}
 
@@ -34,7 +35,7 @@ class ConfirmationPage extends React.Component {
 						<Icon name="checkmark" />
 						<Message.Content>
 							<Message.Header>Tunnus on vahvistettu</Message.Header>
-							<Link to="/dashboard">Siirry eteenpäin</Link>
+							<Link to="/persons">Siirry palveluun</Link>
 						</Message.Content>
 					</Message>
 				)}
@@ -43,7 +44,11 @@ class ConfirmationPage extends React.Component {
 					<Message negative icon>
 						<Icon name="warning sign" />
 						<Message.Content>
-							<Message.Header>Virheellinen avain</Message.Header>
+							<Message.Header>Virheellinen vahvistus</Message.Header>
+							{errors.message}<br />
+							{ (errors.type === "exists") && (
+								<Link to="/login">Siirry eteenpäin</Link>
+							)}
 						</Message.Content>
 					</Message>
 				)}

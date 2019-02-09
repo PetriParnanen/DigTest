@@ -7,6 +7,7 @@ import preData from '../generatedValues.json';
 import AddNew from '../pages/AddNewPage';
 import ListPerson from '../fields/PersonList';
 import { ValidatePerson } from '../forms/AddNewForm';
+import ConfirmEmailMessage from '../fields/ConfirmEmailMessage';
 
 class PersonListPage extends React.Component {
   constructor(props) {
@@ -71,26 +72,35 @@ class PersonListPage extends React.Component {
   render() {
 
     const { values, sortBy, errors } = this.state;
-    const { logout } = this.props;
+    const { logout, isConfirmed } = this.props;
 
     return (
-        <main>
-         	<Route exact path='/persons' render={(props) => (<ListPerson {...props} oldValues={values} onEdit={this.onEdit} deleteRow={this.deleteRow}
-            sortBy={sortBy} reSort={this.reSort} errors={errors} logout={logout} /> )} />
-          	<Route exact path='/persons/addNew' render={(props) => (<AddNew {...props} addNew={this.saveNew} /> )} />
-        </main>
+        <div>
+
+          {!isConfirmed ? (
+             <ConfirmEmailMessage />
+          ) : (
+            <main>
+              <Route exact path='/persons' render={(props) => (<ListPerson {...props} oldValues={values} onEdit={this.onEdit} deleteRow={this.deleteRow}
+                sortBy={sortBy} reSort={this.reSort} errors={errors} logout={logout} /> )} />
+          	 <Route exact path='/persons/addNew' render={(props) => (<AddNew {...props} addNew={this.saveNew} /> )} />
+            </main>
+          )}
+        </div>
     );
   }
 }
 
 PersonListPage.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
+  isConfirmed: PropTypes.bool.isRequired,
 	logout: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state){
 	return {
-		isAuthenticated: !!state.user.token
+		isAuthenticated: !!state.user.token,
+    isConfirmed: !!state.user.confirmed
 	}	
 }
 

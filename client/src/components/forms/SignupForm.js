@@ -45,7 +45,7 @@ class SignupForm extends React.Component {
 		return (
 			<Form onSubmit={this.onSubmit} loading={loading}>
 				<Form.Field error={!!errors.email}>
-					<label htmlFor="email">Email</label>
+					<label htmlFor="email">Sähköpostiosoite</label>
 					<input 
 						type="email" 
 						id="email" 
