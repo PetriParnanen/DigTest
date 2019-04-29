@@ -1,7 +1,7 @@
-var express = require('express');
+const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const sendResetPasswordRequest = require('../mailer').sendResetPasswordRequest;
+const { sendResetPasswordRequest } = require('../mailer');
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
 
 // Confirmation of user login credentials
 router.post('/confirmation', (req, res) => {
-	const token = req.body.token;
+	const { token }= req.body;
 	User.findOne({ confirmationToken: token }).then(user => {
 		if (user){
 			if (user.confirmed) {
@@ -28,9 +28,9 @@ router.post('/confirmation', (req, res) => {
 					{ confirmationToken: token }, 
 					{ confirmed: true},
 					{ new: true }
-				).then(user => {
-					if (user){
-						res.json({ user: user.toAuthJSON() })
+				).then(user2 => {
+					if (user2){
+						res.json({ user: user2.toAuthJSON() })
 					}
 				})
 			}
@@ -42,9 +42,9 @@ router.post('/confirmation', (req, res) => {
 
 // Changing password
 router.post('/reset_password_request', (req, res) => {
-	const email = req.body.email;
+	const { email } = req.body;
 
-	User.findOne({ email: email }).then(user => {
+	User.findOne({ email }).then(user => {
 		if (user) {
 			user.setResetPasswordToken();
 			user.save()
@@ -52,7 +52,7 @@ router.post('/reset_password_request', (req, res) => {
 					sendResetPasswordRequest(userRecord);
 					res.json({});
 				})
-				.catch(err =>
+				.catch(() =>
 					res.status(400).json({ errors: { global: "Järjestelmä virhe" }})
 				)
 		} else {
@@ -63,7 +63,7 @@ router.post('/reset_password_request', (req, res) => {
 
 // validate reset password token
 router.post('/validate_token', (req, res) => {
-	const token = req.body.token;
+	const { token } = req.body;
 
 	jwt.verify(token, process.env.JWT_SECRET, err => {
 		if (err) {

@@ -5,8 +5,8 @@ const from = '"PMP Data" <pemipa.data@gmail.com>';
 function setup() {
 	return nodemailer.createTransport({
 		service: 'Gmail',
-		//host: process.env.EMAIL_HOST,
-		//port: process.env.EMAIL_PORT,
+		// host: process.env.EMAIL_HOST,
+		// port: process.env.EMAIL_PORT,
 		auth: {
 			user: process.env.EMAIL_USER,
 			pass: process.env.EMAIL_PASS
@@ -14,7 +14,7 @@ function setup() {
 	});
 }
 
-var _sendConfirmationEmail = function(user) {
+const _sendConfirmationEmail = function(user) {
 	const tranport = setup();
 	const email = {
 		from,
@@ -30,7 +30,7 @@ var _sendConfirmationEmail = function(user) {
 	tranport.sendMail(email);
 };
 
-var _sendResetPasswordRequest = function(user) {
+const _sendResetPasswordRequest = function(user) {
 	const tranport = setup();
 	const email = {
 		from,

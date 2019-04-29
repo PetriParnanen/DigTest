@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const parseErrors = require('../utils/parseErrors');
-const sendConfirmationEmail = require('../mailer').sendConfirmationEmail;
+const { sendConfirmationEmail } = require('../mailer');
 
 const router = express.Router();
 
@@ -10,9 +10,9 @@ router.post('/', (req, res) => {
 
 	const user = new User({ email });
 	user.setPassword(password);
-	//used in confirmation email
+	// used in confirmation email
 	user.setConfirmationToken();
-	user.save(function(err, userRecord){
+	user.save((err, userRecord) => {
 		if(err){
 			res.status(400).json({ errors: parseErrors(err.errors) });
 		}
