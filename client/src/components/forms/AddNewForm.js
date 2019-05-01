@@ -99,7 +99,7 @@ class AddNewForm extends React.Component {
             { errors.phone && <InlineError text={errors.phone} />}
         </Form.Field>
         <Button primary>Tallenna</Button>
-        <Link to="/"><Button secondary>Peruuta</Button></Link>
+        <Link to="/persons"><Button secondary>Peruuta</Button></Link>
       </Form>
     )
   }
