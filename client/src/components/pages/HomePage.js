@@ -8,7 +8,7 @@ const HomePage = ({ isAuthenticated, logout }) => (
 	<div>
 		<h1>Etusivu</h1>
 		{ isAuthenticated ? (
-			<button onClick={ () => logout() }>Kirjaudu ulos</button>
+			<button type="button" onClick={ () => logout() }>Kirjaudu ulos</button>
 		):( 
 			<div>
 				<Link to="/login">Kirjaudu</Link> or <Link to="/signup">Rekisteröidy</Link>

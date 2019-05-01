@@ -14,18 +14,22 @@ class LoginForm extends React.Component {
 		errors: {}
 	};
 
-	onChange = e => 
+	onChange = e => {
+		const { data } = this.state;
 		this.setState({ 
-			data: { ...this.state.data, [e.target.name]: e.target.value }
-		});
+			data: { ...data, [e.target.name]: e.target.value }
+		})
+	};
 
-	onSubmit = (e) => {
+	onSubmit = e => {
 		e.preventDefault();
-		const errors = this.validate(this.state.data);
+		const { data } = this.state;
+		const errors = this.validate(data);
 		this.setState({ errors });
-		if (Object.keys(errors).length === 0){
+		if (Object.keys(errors).length === 0) {
 			this.setState({ loading: true });
-			this.props.submit(this.state.data)
+			const { submit } = this.props;
+			submit(data)
 				.catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
 		}
 	};
@@ -35,7 +39,7 @@ class LoginForm extends React.Component {
 		if (!data.password) errors.password = "Salasana on pakollinen";
 		if (!Validator.isEmail(data.email)) errors.email = "Virheellinen sähköposti";
 		return errors;
-	}
+	};
 
 	render() {
 
@@ -49,7 +53,7 @@ class LoginForm extends React.Component {
 					</Message>
 				}
 				<Form.Field error={!!errors.email}>
-					<label htmlFor="email">Email</label>
+					<label htmlFor="email">Email
 					<input 
 						type="email" 
 						id="email" 
@@ -57,10 +61,11 @@ class LoginForm extends React.Component {
 						placeholder="example@example.com" 
 						value={data.email} 
 						onChange={this.onChange} />
+						</label>
 						{ errors.email && <InlineError text={errors.email} />}
 				</Form.Field>
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Salasana</label>
+					<label htmlFor="password">Salasana
 					<input 
 						type="password" 
 						id="password" 
@@ -68,6 +73,7 @@ class LoginForm extends React.Component {
 						placeholder="Make it secure" 
 						value={data.password} 
 						onChange={this.onChange} />
+						</label>
 						{ errors.password && <InlineError text={errors.password} />}
 				</Form.Field>
 				<Button primary>Kirjaudu</Button>

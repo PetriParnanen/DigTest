@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions/auth';
 import preData from '../generatedValues.json';
-import AddNew from '../pages/AddNewPage';
+import AddNew from './AddNewPage';
 import ListPerson from '../fields/PersonList';
 import { ValidatePerson } from '../forms/AddNewForm';
 import ConfirmEmailMessage from '../fields/ConfirmEmailMessage';

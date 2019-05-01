@@ -87,7 +87,7 @@ class PersonList extends React.Component {
           <Grid.Row columns={1} key="button">
             <Grid.Column key="button">
               <Link to="/persons/addNew"><Button primary>Lisää uusi</Button></Link>
-              <button className="ui button secondary" onClick={ () => logout()}>Kirjaudu ulos</button>
+              <button type="button" className="ui button secondary" onClick={ () => logout()}>Kirjaudu ulos</button>
             </Grid.Column>
           </Grid.Row>
         </Grid>

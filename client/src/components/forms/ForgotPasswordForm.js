@@ -13,31 +13,34 @@ class ForgotPasswordForm extends React.Component {
 		errors: {}
 	};
 
-	onChange = e => 
+	onChange = e => {
+		const { data } = this.state;
 		this.setState({
-			...this.state,
-			data: { ...this.state.data, [e.target.name]: e.target.value }
+			data: { ...data, [e.target.name]: e.target.value }
 		});
+	};
 
 	onSubmit = e => {
 		e.preventDefault();
-		const errors = this.validate(this.state.data);
+		const { data } = this.state;
+		const errors = this.validate(data);
 		this.setState({ errors });
 		if (Object.keys(errors).length === 0) {
 			this.setState({ loading: true });
-			this.props.submit(this.state.data)
+			const { submit } = this.props;
+			submit(data)
 				.catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
 		}
-	}
+	};
 
 	validate = data => {
 		const errors = {};
 		if (!isEmail(data.email)) errors.email = "Virheellinen sähköpostiosoite";
 		return errors;
-	}
+	};
 
 	render() {
-		const { errors, data, loading } = this.state;
+		const { data, errors, loading } = this.state;
 
 		return (
 			<Form onSubmit={this.onSubmit} loading={loading}>
@@ -47,7 +50,7 @@ class ForgotPasswordForm extends React.Component {
 					</Message>
 				}
 				<Form.Field error={!!errors.email}>
-					<label htmlFor="email">Email</label>
+					<label htmlFor="email">Email
 					<input 
 						type="email" 
 						id="email" 
@@ -55,6 +58,7 @@ class ForgotPasswordForm extends React.Component {
 						placeholder="example@example.com" 
 						value={data.email} 
 						onChange={this.onChange} />
+						</label>
 						{ errors.email && <InlineError text={errors.email} />}
 				</Form.Field>
 				<Button primary>Lähetä</Button>

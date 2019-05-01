@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Message, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import { validateToken, resetPassword } from '../../actions/auth';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 
@@ -23,7 +22,7 @@ class ResetPasswordPage extends React.Component {
 
 	render() {
 		const { loading, success } = this.state;
-		const token = this.props.match.params.token;
+		const { match } = this.props;
 
 		return (
 			<div>
@@ -33,7 +32,7 @@ class ResetPasswordPage extends React.Component {
 						<Message.Header>Loading</Message.Header>
 					</Message>
 					)}
-				{ !loading && success && <ResetPasswordForm submit={this.submit} token={token} />}
+				{ !loading && success && <ResetPasswordForm submit={this.submit} token={match.params.token} />}
 				{ !loading && !success && (
 					<Message negative icon>
 						<Icon name="warning sign" />

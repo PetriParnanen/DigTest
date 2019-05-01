@@ -6,3 +6,5 @@ export const signup = (data) => (dispatch) =>
 		localStorage.connectJWT = user.token;
 		dispatch(userLoggedIn(user));
 	});
+
+export default signup;

@@ -14,19 +14,22 @@ class ResetPasswordForm extends React.Component {
 		errors: {}
 	};
 
-	onChange = e => 
-		this.setState({
-			...this.state,
-			data: { ...this.state.data, [e.target.name]: e.target.value }
-		});
+	onChange = e => {
+		const { data } = this.state;
+		this.setState({ 
+			data: { ...data, [e.target.name]: e.target.value }
+		})
+	};
 
 	onSubmit = e => {
 		e.preventDefault();
-		const errors = this.validate(this.state.data);
+		const { data } = this.state;
+		const errors = this.validate(data);
 		this.setState({ errors });
 		if (Object.keys(errors).length === 0) {
 			this.setState({ loading: true });
-			this.props.submit(this.state.data)
+			const { submit } = this.props;
+			submit(data)
 				.catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
 		}
 	};
@@ -49,7 +52,7 @@ class ResetPasswordForm extends React.Component {
 					</Message>
 				}
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Uusi salasana</label>
+					<label htmlFor="password">Uusi salasana
 					<input 
 						type="password" 
 						id="password" 
@@ -57,10 +60,11 @@ class ResetPasswordForm extends React.Component {
 						placeholder="your new password" 
 						value={data.password} 
 						onChange={this.onChange} />
+					</label>
 						{ errors.password && <InlineError text={errors.password} />}
 				</Form.Field>
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Salasanan vahvistus</label>
+					<label htmlFor="password">Salasanan vahvistus
 					<input 
 						type="password" 
 						id="passwordConfirmation" 
@@ -68,6 +72,7 @@ class ResetPasswordForm extends React.Component {
 						placeholder="password confirmation" 
 						value={data.passwordConfirmation} 
 						onChange={this.onChange} />
+					</label>
 				</Form.Field>
 				<Button primary>Resetoi</Button>
 			</Form>

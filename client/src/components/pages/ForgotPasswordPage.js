@@ -10,14 +10,15 @@ class ForgotPasswordPage extends React.Component {
 		success: false
 	}
 
-	submit = data =>
+	submit = data => 
 		this.props.resetPasswordRequest(data)
 			.then(() => this.setState({ success: true }));
 
 	render() {
+		const { success } = this.state;
 		return (
 			<div>
-			{this.state.success ? 
+			{success ? 
 				(
 					<Message positive>Sähköposti on lähetetty.</Message>
 				) : (
