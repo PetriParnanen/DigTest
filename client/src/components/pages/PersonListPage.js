@@ -66,7 +66,6 @@ class PersonListPage extends React.Component {
 
     // add new person to list and save new list
     values.push(newPerson);
-    console.log("HERE");
     this.setState({values});
   }
 
