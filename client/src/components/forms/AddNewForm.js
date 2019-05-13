@@ -43,7 +43,6 @@ class AddNewForm extends React.Component {
 
       const { submit } = this.props;
       submit(data);
-        //.catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
     }
   };
 
