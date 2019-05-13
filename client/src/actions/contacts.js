@@ -16,10 +16,12 @@ const contactCreated = (data) => ({
 
 export const fetchContacts = () => (dispatch) =>
   api.contacts.fetchAll()
-    .then(contacts => {
-    	dispatch(contactsFetched( normalize(contacts, [contactSchema])));
-    });
+    .then(contacts => 
+    	dispatch(contactsFetched( normalize(contacts, [contactSchema])))
+    );
 
 export const createContact = (data) => (dispatch) => 
 	api.contacts.create(data)
-		.then(contact => dispatch(contactCreated( normalize(contact, contactSchema))));
+		.then(contact => 
+			dispatch(contactCreated( normalize(contact, contactSchema)))
+		);

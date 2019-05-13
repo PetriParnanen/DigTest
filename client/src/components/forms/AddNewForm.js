@@ -41,10 +41,9 @@ class AddNewForm extends React.Component {
     if (Object.keys(errors).length === 0){
       this.setState({ loading: true });
 
-      // normally this would go to database, but right now only localstorage
       const { submit } = this.props;
-      submit(data)
-        .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
+      submit(data);
+        //.catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
     }
   };
 

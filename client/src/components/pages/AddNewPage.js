@@ -10,7 +10,7 @@ class AddNewPage extends React.Component {
     const newData = data;
     newData.id = fetchId();
     cContact(newData).then(() => history.push("/persons"))
-      .catch(console.log("Auts"));
+      .catch(err => console.log(err));
   }
 
   render(){
