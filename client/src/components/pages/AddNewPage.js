@@ -5,12 +5,11 @@ import AddNewForm from '../forms/AddNewForm';
 import { createContact } from '../../actions/contacts';
 
 class AddNewPage extends React.Component {
-  submit = (data) => {
+  addContact = (data) => {
     const { cContact, history, fetchId } = this.props;
     const newData = data;
     newData.id = fetchId();
-    cContact(newData).then(() => history.push("/persons"))
-      .catch(err => console.log(err));
+    cContact(newData).then(() => history.push("/persons"));
   }
 
   render(){
@@ -18,7 +17,7 @@ class AddNewPage extends React.Component {
       <div>
         <h1>Lisää uusi</h1>
 
-        <AddNewForm submit={this.submit} />
+        <AddNewForm submit={this.addContact} />
       </div>
     );
   }
