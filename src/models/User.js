@@ -38,10 +38,12 @@ schema.methods.generateResetPasswordLink = function generateResetPasswordLink(){
 };
 
 schema.methods.generateJWT = function generateJWT() {
-	return jwt.sign({
+	const token = jwt.sign({
 		email: this.email,
 		confirmed: this.confirmed
 	}, process.env.JWT_SECRET);
+	console.log(token);
+	return token;
 };
 
 schema.methods.generateResetPasswordToken = function generateResetPasswordToken() {

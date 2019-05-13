@@ -7,15 +7,9 @@ import { SortValues } from '../scripts/Sorter';
 import InlineError from './InlineError';
 
 class PersonList extends React.Component {
-  constructor(props){
-    super(props);
-
-    this.values=[];
-
-    this.state ={
-  	  editable: {},
-    }
-  }
+  state = {
+  	editable: {},
+  };
 
   // sets field so it can be edited
   setEditable = (id, field) => {
@@ -31,10 +25,10 @@ class PersonList extends React.Component {
 
     return (
       <div>
-        <div>Tämä lista ei ole kannassa vaan säilytetään vain state:ssa</div>
+        <div>&nbsp;</div>
         <Grid columns={5}>
           <Grid.Row key="header">
-            <Grid.Column width={1} className="hover" onClick={() => reSort("id")}><b>Id</b>{"  "}
+            <Grid.Column width={2} className="hover" onClick={() => reSort("id")}><b>Id</b>{"  "}
               {sortBy.field==="id" &&
                 <Image src={image} className="arrow" alt="arrow" inline />
               }
@@ -57,7 +51,7 @@ class PersonList extends React.Component {
           </Grid.Row>
         {this.values && this.values.map(val => (
           <Grid.Row key={val.id} className="noPadding"> 
-            <Grid.Column key="id" width={1}>{val.id}</Grid.Column>
+            <Grid.Column key="id" width={2}>{val.id}</Grid.Column>
             <Grid.Column key="name" width={5}>
               <Editable 
                 editField={editable} field="name" rowId={val.id} value={val.name} 
@@ -79,7 +73,7 @@ class PersonList extends React.Component {
                 { errors[val.id] && errors[val.id].phone && 
                   <InlineError text={errors[val.id].phone} />}
             </Grid.Column>
-            <Grid.Column key="delete" width={2}>
+            <Grid.Column key="delete" width={1}>
               <Image src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => deleteRow(val.id)} />
             </Grid.Column>
           </Grid.Row>

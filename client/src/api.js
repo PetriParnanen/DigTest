@@ -14,5 +14,11 @@ export default {
 			axios.post('/api/auth/validate_token', { token }),
 		resetPassword: data => 
 			axios.post('/api/auth/reset_password', { data })
+	},
+	contacts: {
+		fetchAll: () =>
+			axios.get('/api/contacts').then(res => res.data.contacts),
+		create: contact =>
+			axios.post('/api/contacts', { contact }).then(res => res.data.contact)
 	}
 }

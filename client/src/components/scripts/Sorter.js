@@ -2,6 +2,8 @@
 export const SortValues = (values, sortBy) => {
   // using typeof to decide how to sort, could do more types but right now only what I need
 
+  if (values.length===0) return;
+
   // Number fields
   if (typeof values[0][sortBy.field] === 'number') {
     return values.sort((a,b) => (sortBy.dir==="desc"?

@@ -1,13 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AddNewForm from '../forms/AddNewForm';
+import { createContact } from '../../actions/contacts';
 
 class AddNewPage extends React.Component {
   submit = (data) => {
-    const { addNew, history } = this.props;
-    addNew(data);
-    history.push("/persons");
-    // this.props.addNew(data).then(() => this.props.history.push("/")); waiting for database
+    const { cContact, history, fetchId } = this.props;
+    const newData = data;
+    newData.id = fetchId();
+    cContact(newData).then(() => history.push("/persons"))
+      .catch(console.log("Auts"));
   }
 
   render(){
@@ -25,7 +28,8 @@ AddNewPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
-  addNew: PropTypes.func.isRequired
+  fetchId: PropTypes.func.isRequired,
+  cContact: PropTypes.func.isRequired
 };
 
-export default AddNewPage;
+export default connect(null, { cContact: createContact })(AddNewPage);

@@ -6,7 +6,6 @@ import InlineError from '../fields/InlineError';
 class ResetPasswordForm extends React.Component {
 	state = {
 		data: {
-			token: this.props.token,
 			password: '',
 			passwordConfirmation: ''
 		},
@@ -28,7 +27,8 @@ class ResetPasswordForm extends React.Component {
 		this.setState({ errors });
 		if (Object.keys(errors).length === 0) {
 			this.setState({ loading: true });
-			const { submit } = this.props;
+			const { submit, token } = this.props;
+			data.token = token;
 			submit(data)
 				.catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
 		}

@@ -4,7 +4,7 @@ const User = require('../models/User');
 module.exports = function(req, res, next) {
 	const header = req.headers.authorization;
 	let token;
-	const arrIndex = 0;
+	const arrIndex = 1;
 
 	if (header) token = header.split(' ')[arrIndex];
 

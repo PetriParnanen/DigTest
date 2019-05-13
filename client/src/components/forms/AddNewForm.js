@@ -16,18 +16,14 @@ export const ValidatePerson = (data) => {
 };
 
 class AddNewForm extends React.Component {
-  constructor(props){
-  	super(props);
-
-    this.state={
-      data: {
-        name: "",
-        email: "",
-        phone: ""
-      },
-      loading: false,
-      errors: {}
-    };
+  state={
+    data: {
+      name: "",
+      email: "",
+      phone: ""
+    },
+    loading: false,
+    errors: {}
   }
 
   onChange = e => {
@@ -43,12 +39,12 @@ class AddNewForm extends React.Component {
     const errors = ValidatePerson(data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0){
-      // this.setState({ loading: true }); waiting for database
+      this.setState({ loading: true });
 
       // normally this would go to database, but right now only localstorage
       const { submit } = this.props;
-      submit(data);
-      //  .catch(err => this.setState({ errors: err.response.data.errors, loading: false })); waiting for database
+      submit(data)
+        .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
     }
   };
 
