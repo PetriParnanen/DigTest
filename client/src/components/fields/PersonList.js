@@ -11,8 +11,12 @@ class PersonList extends React.Component {
   	editable: {},
   };
 
-  // sets field so it can be edited
+  // sets field so it can be edited and also will save to database on blur
   setEditable = (id, field) => {
+    if ((id === "" && field==="")){
+      const { updateContact } = this.props;
+      updateContact(this.state.editable.id);
+    };
     this.setState( { editable: {id, field} } );
   }
 
@@ -97,7 +101,8 @@ PersonList.propTypes = {
 	sortBy: PropTypes.instanceOf(Object).isRequired,
 	reSort: PropTypes.func.isRequired,
   errors: PropTypes.instanceOf(Object).isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  updateContact: PropTypes.func.isRequired
 }
 
 export default PersonList;

@@ -1,5 +1,5 @@
 import { normalize } from 'normalizr';
-import { CONTACTS_FETCHED, CONTACT_CREATED } from '../types';
+import { CONTACTS_FETCHED, CONTACT_CREATED, CONTACT_UPDATED } from '../types';
 import api from '../api';
 import { contactSchema } from '../schemas';
 
@@ -14,6 +14,11 @@ const contactCreated = (data) => ({
 	data
 });
 
+const contactUpdated = (data) => ({
+	type: CONTACT_UPDATED,
+	data
+});
+
 export const fetchContacts = () => (dispatch) =>
   api.contacts.fetchAll()
     .then(contacts => 
@@ -24,4 +29,10 @@ export const createContact = (data) => (dispatch) =>
 	api.contacts.create(data)
 		.then(contact => 
 			dispatch(contactCreated( normalize(contact, contactSchema)))
+		);
+
+export const updateContact = (data) => (dispatch) => 
+	api.contacts.update(data)
+		.then(contact => 
+			dispatch(contactUpdated( normalize(contact, contactSchema)))
 		);

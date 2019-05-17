@@ -8,7 +8,7 @@ import ListPerson from '../fields/PersonList';
 import { ValidatePerson } from '../forms/AddNewForm';
 import ConfirmEmailMessage from '../fields/ConfirmEmailMessage';
 import { allContactsSelector } from '../../reducers/contact';
-import { fetchContacts } from '../../actions/contacts';
+import { fetchContacts, updateContact } from '../../actions/contacts';
 
 class PersonListPage extends React.Component {
   state = {
@@ -35,10 +35,22 @@ class PersonListPage extends React.Component {
 
   // delete row
   // Will remove by filtering out the deletable row and save rest back to state
-  deleteRow = (rowId) => {
-    const { contacts } = this.props;
-    const newValues = contacts.filter(a => a.id !== rowId);
-    this.setState({values: newValues});
+   deleteRow = (rowId) => {
+    console.log(rowId);
+    // const { contacts } = this.props;
+    // const newValues = contacts.filter(a => a.id !== rowId);
+    // this.setState({ values: newValues });
+  }
+
+  updateRow = (rowId) => {
+    const { contacts, updateContactAction } = this.props;
+    const { errors } = this.state;
+    const updatePerson = contacts.find(a => a.id === rowId);
+    if (errors[rowId] && Object.getOwnPropertyNames(errors[rowId]).length >= 1){
+      console.log("inform no save because of errors");
+    } else {
+      updateContactAction(updatePerson).catch((err) => console.log(`update failed ${err}`));
+    }
   }
 
   onEdit = (rowId, field, e) => {
@@ -59,19 +71,6 @@ class PersonListPage extends React.Component {
     return ( contacts.length===0 ? 0 : Math.max(...contacts.map((e) => e.id))) +1;
   }
 
-  // will save new row to values
-  /* saveNew = (person) => {
-    const newPerson = person;
-
-    // getting the biggest id and add one
-    const { values } = this.state;
-    // newPerson.id = ( values.length===0 ? 0 : Math.max(...values.map((e) => e.id))) +1;
-
-    // add new person to list and save new list
-    values.push(newPerson);
-    this.setState({values});
-  } */
-
   render() {
 
     const { sortBy, errors } = this.state;
@@ -85,7 +84,7 @@ class PersonListPage extends React.Component {
           ) : (
             <main>
               <Route exact path='/persons' render={(props) => (<ListPerson {...props} oldValues={contacts} onEdit={this.onEdit} deleteRow={this.deleteRow}
-                sortBy={sortBy} reSort={this.reSort} errors={errors} logout={logout} /> )} />
+                updateContact={this.updateRow} sortBy={sortBy} reSort={this.reSort} errors={errors} logout={logout} /> )} />
           	 <Route exact path='/persons/addNew' render={(props) => (<AddNew {...props} fetchId={this.fetchNewId} /> )} />
             </main>
           )}
@@ -98,6 +97,7 @@ PersonListPage.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
   isConfirmed: PropTypes.bool.isRequired,
   fetchContacts: PropTypes.func.isRequired,
+  updateContactAction: PropTypes.func.isRequired,
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired
@@ -114,4 +114,4 @@ function mapStateToProps(state){
 	}	
 }
 
-export default connect(mapStateToProps, { logout: actions.logout, fetchContacts })(PersonListPage);
+export default connect(mapStateToProps, { logout: actions.logout, fetchContacts, updateContactAction: updateContact })(PersonListPage);

@@ -6,10 +6,10 @@ import { createContact } from '../../actions/contacts';
 
 class AddNewPage extends React.Component {
   addContact = (data) => {
-    const { cContact, history, fetchId } = this.props;
+    const { createContactAction, history, fetchId } = this.props;
     const newData = data;
     newData.id = fetchId();
-    cContact(newData).then(() => history.push("/persons"));
+    createContactAction(newData).then(() => history.push("/persons"));
   }
 
   render(){
@@ -28,7 +28,7 @@ AddNewPage.propTypes = {
     push: PropTypes.func.isRequired
   }).isRequired,
   fetchId: PropTypes.func.isRequired,
-  cContact: PropTypes.func.isRequired
+  createContactAction: PropTypes.func.isRequired
 };
 
-export default connect(null, { cContact: createContact })(AddNewPage);
+export default connect(null, { createContactAction: createContact })(AddNewPage);
