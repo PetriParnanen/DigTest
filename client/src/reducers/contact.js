@@ -10,7 +10,7 @@ export default function contacts(state = {}, action = {}) {
 		case CONTACT_DELETED: {
 			const newState = Object.values(state).filter((contact) => contact._id !== action.id);
 			return { ...newState };
-		}
+		};
 		default:
 			return state;
 	}
