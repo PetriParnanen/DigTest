@@ -7,10 +7,11 @@ export default function contacts(state = {}, action = {}) {
 		case CONTACT_CREATED:
 		case CONTACT_UPDATED:
 			return { ...state, ...action.data.entities.contacts };
-		case CONTACT_DELETED: {
-			const newState = Object.values(state).filter((contact) => contact._id !== action.id);
+		case CONTACT_DELETED:{
+			const newState = state; 
+			delete newState[action.id];
 			return { ...newState };
-		};
+		}
 		default:
 			return state;
 	}
