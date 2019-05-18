@@ -20,13 +20,14 @@ router.post("/", (req, res) => {
 router.put("/", (req, res) => {
 	Contact.findOneAndUpdate({ userId: req.currentUser._id, id: req.body.contact.id }, 
 		{ ...req.body.contact, userId: req.currentUser._id }, { new: true })
-		.then(contact => { console.log(contact); res.json({ contact })})
+		.then(contact => res.json({ contact }))
 		.catch(err => res.status(400).json({ errors: parseErrors(err.errors) } ));
 });
 
-router.delete("/", (req, res) => {
-	Contact.delete({ _id: req.currentContact._id })
-		.then()
+router.delete("/:id", (req, res) => {
+	const { id } = req.params;
+	Contact.findOneAndDelete({ userId: req.currentUser._id, _id: id })
+		.then(() => res.json({ id }))
 		.catch(() => res.status(400).json({ errors: "Failed deletion" } ));
 });
 

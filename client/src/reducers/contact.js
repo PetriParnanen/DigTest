@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { CONTACTS_FETCHED, CONTACT_CREATED, CONTACT_UPDATED } from '../types';
+import { CONTACTS_FETCHED, CONTACT_CREATED, CONTACT_UPDATED, CONTACT_DELETED } from '../types';
 
 export default function contacts(state = {}, action = {}) {
 	switch(action.type) {
@@ -7,6 +7,10 @@ export default function contacts(state = {}, action = {}) {
 		case CONTACT_CREATED:
 		case CONTACT_UPDATED:
 			return { ...state, ...action.data.entities.contacts };
+		case CONTACT_DELETED: {
+			const newState = Object.values(state).filter((contact) => contact._id !== action.id);
+			return { ...newState };
+		}
 		default:
 			return state;
 	}

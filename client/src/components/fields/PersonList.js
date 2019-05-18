@@ -78,7 +78,7 @@ class PersonList extends React.Component {
                   <InlineError text={errors[val.id].phone} />}
             </Grid.Column>
             <Grid.Column key="delete" width={1}>
-              <Image src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => deleteRow(val.id)} />
+              <Image src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => deleteRow(val._id)} />
             </Grid.Column>
           </Grid.Row>
         ))}

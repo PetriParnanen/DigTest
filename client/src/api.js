@@ -22,5 +22,7 @@ export default {
 			axios.post('/api/contacts', { contact }).then(res => res.data.contact),
 		update: contact =>
 			axios.put('/api/contacts', { contact }).then(res => res.data.contact),
+		delete: id =>
+			axios.delete(`/api/contacts/${id}`).then(res => res.data.id)
 	}
 }

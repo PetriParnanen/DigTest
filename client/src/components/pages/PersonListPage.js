@@ -8,7 +8,7 @@ import ListPerson from '../fields/PersonList';
 import { ValidatePerson } from '../forms/AddNewForm';
 import ConfirmEmailMessage from '../fields/ConfirmEmailMessage';
 import { allContactsSelector } from '../../reducers/contact';
-import { fetchContacts, updateContact } from '../../actions/contacts';
+import { fetchContacts, updateContact, deleteContact } from '../../actions/contacts';
 
 class PersonListPage extends React.Component {
   state = {
@@ -36,12 +36,12 @@ class PersonListPage extends React.Component {
   // delete row
   // Will remove by filtering out the deletable row and save rest back to state
    deleteRow = (rowId) => {
-    console.log(rowId);
-    // const { contacts } = this.props;
-    // const newValues = contacts.filter(a => a.id !== rowId);
-    // this.setState({ values: newValues });
+    const { deleteContactAction } = this.props;
+    deleteContactAction(rowId);
   }
 
+
+  // Update existing row
   updateRow = (rowId) => {
     const { contacts, updateContactAction } = this.props;
     const { errors } = this.state;
@@ -65,7 +65,7 @@ class PersonListPage extends React.Component {
     this.setState({ errors });
   }
 
-  // getting the biggest id and add one
+  // getting the biggest id and add one. Used when creating new row
   fetchNewId = () => {
     const { contacts } = this.props;
     return ( contacts.length===0 ? 0 : Math.max(...contacts.map((e) => e.id))) +1;
@@ -98,6 +98,7 @@ PersonListPage.propTypes = {
   isConfirmed: PropTypes.bool.isRequired,
   fetchContacts: PropTypes.func.isRequired,
   updateContactAction: PropTypes.func.isRequired,
+  deleteContactAction: PropTypes.func.isRequired,
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired
@@ -114,4 +115,4 @@ function mapStateToProps(state){
 	}	
 }
 
-export default connect(mapStateToProps, { logout: actions.logout, fetchContacts, updateContactAction: updateContact })(PersonListPage);
+export default connect(mapStateToProps, { logout: actions.logout, fetchContacts, updateContactAction: updateContact, deleteContactAction: deleteContact })(PersonListPage);
