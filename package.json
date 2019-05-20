@@ -12,6 +12,7 @@
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
+    "babel-eslint": "^10.0.1",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
