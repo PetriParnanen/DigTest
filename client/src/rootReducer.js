@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
 import user from './reducers/user';
+import locale from './reducers/locale';
 import contacts from './reducers/contact';
 
 // export default
 const appReducer = combineReducers({
 	user,
+	locale,
 	contacts
 });
 
