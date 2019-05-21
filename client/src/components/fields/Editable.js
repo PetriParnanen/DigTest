@@ -9,7 +9,7 @@ export const Editable = ({editField, field, rowId, value, onChange, setEdit}) =>
     return (
       <div key={field}>
       {field === 'phone' ? (
-          <Input type={type} name={field} value={value} placeholder="Muodossa 123 123 123"
+          <Input type={type} name={field} value={value} placeholder="123 123 123"
             onChange={(e) => onChange(rowId, field, e)} onBlur={() => setEdit("", "")} required />
       ) : (
         <Input type={type} name={field} value={value} onChange={(e) => onChange(rowId, field, e)} onBlur={() => setEdit("", "")} required />

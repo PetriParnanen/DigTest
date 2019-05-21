@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Message, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { confirm } from '../../actions/auth';
 
 class ConfirmationPage extends React.Component {
@@ -26,7 +27,9 @@ class ConfirmationPage extends React.Component {
 				{ loading && (
 					<Message icon>
 						<Icon name="circle notched" loading />
-						<Message.Header>Tarkistamassa sähköpostiosoitetta</Message.Header>
+						<Message.Header>
+							<FormattedMessage id="confirm.check" defaultMessage="Checking email" />
+						</Message.Header>
 					</Message>
 				)}
 
@@ -34,8 +37,12 @@ class ConfirmationPage extends React.Component {
 					<Message success icon>
 						<Icon name="checkmark" />
 						<Message.Content>
-							<Message.Header>Tunnus on vahvistettu</Message.Header>
-							<Link to="/persons">Siirry palveluun</Link>
+							<Message.Header>
+								<FormattedMessage id="confirm.confirm" defaultMessage="Email has been confirmed" />
+							</Message.Header>
+							<Link to="/persons">
+								<FormattedMessage id="confirm.move" defaultMessage="Move forward" />
+							</Link>
 						</Message.Content>
 					</Message>
 				)}
@@ -44,10 +51,14 @@ class ConfirmationPage extends React.Component {
 					<Message negative icon>
 						<Icon name="warning sign" />
 						<Message.Content>
-							<Message.Header>Virheellinen vahvistus</Message.Header>
+							<Message.Header>
+								<FormattedMessage id="confirm.error" defaultMessage="Confirmation failed" />
+							</Message.Header>
 							{errors.message}<br />
 							{ (errors.type === "exists") && (
-								<Link to="/login">Siirry eteenpäin</Link>
+								<Link to="/login">
+									<FormattedMessage id="confirm.errormove" defaultMessage="CMove to login" />
+								</Link>
 							)}
 						</Message.Content>
 					</Message>

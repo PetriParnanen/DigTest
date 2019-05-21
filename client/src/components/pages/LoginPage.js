@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import LoginForm from '../forms/LoginForm';
 import { login } from '../../actions/auth';
 
@@ -12,11 +13,15 @@ class LoginPage extends React.Component {
 	render(){
 		return (
 			<div>
-				<h1>Kirjautumissivu</h1>
+				<h1>
+					<FormattedMessage id="login.page" defaultMessage="Login" />
+				</h1>
 
 				<LoginForm submit={this.submit} />
 
-				<Link to="/forgot_password">Unohdettu salasana</Link>
+				<Link to="/forgot_password">
+					<FormattedMessage id="login.forgotpassword" defaultMessage="Forgotten password" />
+				</Link>
 			</div>
 		);
 	}

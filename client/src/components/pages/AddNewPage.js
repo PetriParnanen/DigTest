@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import AddNewForm from '../forms/AddNewForm';
 import { createContact } from '../../actions/contacts';
 
@@ -15,7 +16,9 @@ class AddNewPage extends React.Component {
   render(){
     return (
       <div>
-        <h1>Lisää uusi</h1>
+        <h1>
+          <FormattedMessage id="new.title" defaultMessage="Add new contact" />
+        </h1>
 
         <AddNewForm submit={this.addContact} />
       </div>

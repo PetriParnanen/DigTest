@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Message } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import InlineError from '../fields/InlineError';
 
 class ResetPasswordForm extends React.Component {
@@ -36,8 +37,9 @@ class ResetPasswordForm extends React.Component {
 
 	validate = data => {
 		const errors = {};
-		if (!data.password) errors.password = "Salasana on pakollinen";
-		if (data.password !== data.passwordConfirmation) errors.password = "Salasanojen pitää olla samat";
+		const { formatMessage } = this.props.intl;
+		if (!data.password) errors.password = formatMessage({ id: 'error.mandatorypassword'});
+		if (data.password !== data.passwordConfirmation) errors.password = formatMessage({ id: 'error.samepassword'});
 		return errors;
 	};
 
@@ -47,24 +49,28 @@ class ResetPasswordForm extends React.Component {
 		return (
 			<Form onSubmit={this.onSubmit} loading={loading}>
 				{ errors.global && <Message negative>
-					<Message.Header>Jotain meni pieleen</Message.Header>
+					<Message.Header>
+						<FormattedMessage id="reset.globalerror" defaultMessage="Something went wrong" />
+					</Message.Header>
 					<p>{ errors.global }</p>
 					</Message>
 				}
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Uusi salasana
+					<label htmlFor="password">
+						<FormattedMessage id="reset.newpassword" defaultMessage="New password" />
 					<input 
 						type="password" 
 						id="password" 
 						name="password" 
-						placeholder="your new password" 
+						placeholder="" 
 						value={data.password} 
 						onChange={this.onChange} />
 					</label>
 						{ errors.password && <InlineError text={errors.password} />}
 				</Form.Field>
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Salasanan vahvistus
+					<label htmlFor="password">
+						<FormattedMessage id="reset.confirmpassword" defaultMessage="Confirm new password" />
 					<input 
 						type="password" 
 						id="passwordConfirmation" 
@@ -74,7 +80,9 @@ class ResetPasswordForm extends React.Component {
 						onChange={this.onChange} />
 					</label>
 				</Form.Field>
-				<Button primary>Resetoi</Button>
+				<Button primary>
+					<FormattedMessage id="reset.button" defaultMessage="Reset" />
+				</Button>
 			</Form>
 		);
 	}
@@ -82,7 +90,8 @@ class ResetPasswordForm extends React.Component {
 
 ResetPasswordForm.propTypes = {
 	submit: PropTypes.func.isRequired,
-	token: PropTypes.string.isRequired
+	token: PropTypes.string.isRequired,
+	intl: intlShape.isRequired
 }
 
-export default ResetPasswordForm;
+export default injectIntl(ResetPasswordForm);

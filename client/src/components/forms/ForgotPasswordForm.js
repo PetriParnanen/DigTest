@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmail from 'validator/lib/isEmail';
 import { Form, Button, Message } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import InlineError from '../fields/InlineError';
 
 class ForgotPasswordForm extends React.Component {
@@ -35,7 +36,8 @@ class ForgotPasswordForm extends React.Component {
 
 	validate = data => {
 		const errors = {};
-		if (!isEmail(data.email)) errors.email = "Virheellinen sähköpostiosoite";
+		const { formatMessage } = this.props.intl;
+		if (!isEmail(data.email)) errors.email = formatMessage({ id: 'error.email'});
 		return errors;
 	};
 
@@ -45,12 +47,15 @@ class ForgotPasswordForm extends React.Component {
 		return (
 			<Form onSubmit={this.onSubmit} loading={loading}>
 				{ !!errors.global && <Message negative>
-					<Message.Header>Jotain meni pieleen</Message.Header>
+					<Message.Header>
+						<FormattedMessage id="forgot.globalerror" defaultMessage="Database error" />
+					</Message.Header>
 					<p>{ errors.global }</p>
 					</Message>
 				}
 				<Form.Field error={!!errors.email}>
-					<label htmlFor="email">Email
+					<label htmlFor="email">
+						<FormattedMessage id="forgot.email" defaultMessage="Email" />
 					<input 
 						type="email" 
 						id="email" 
@@ -61,14 +66,17 @@ class ForgotPasswordForm extends React.Component {
 						</label>
 						{ errors.email && <InlineError text={errors.email} />}
 				</Form.Field>
-				<Button primary>Lähetä</Button>
+				<Button primary>
+					<FormattedMessage id="forgot.button" defaultMessage="Send" />
+				</Button>
 			</Form>
 		);
 	}
 }
 
 ForgotPasswordForm.propTypes = {
-	submit: PropTypes.func.isRequired
+	submit: PropTypes.func.isRequired,
+	intl: intlShape.isRequired
 }
 
-export default ForgotPasswordForm;
+export default injectIntl(ForgotPasswordForm);

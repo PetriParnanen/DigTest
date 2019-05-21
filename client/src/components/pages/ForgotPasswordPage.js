@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Message } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 import ForgotPasswordForm from '../forms/ForgotPasswordForm';
 import { resetPasswordRequest } from '../../actions/auth';
 
@@ -20,7 +21,9 @@ class ForgotPasswordPage extends React.Component {
 			<div>
 			{success ? 
 				(
-					<Message positive>Sähköposti on lähetetty.</Message>
+					<Message positive>
+						<FormattedMessage id="forgot.send" defaultMessage="Email has been send" />
+					</Message>
 				) : (
 					<ForgotPasswordForm submit={this.submit} />
 				)

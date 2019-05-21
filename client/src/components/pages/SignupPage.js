@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import SignupForm from '../forms/SignupForm';
 import { signup } from '../../actions/users';
 
@@ -10,9 +11,12 @@ class SignupPage extends React.Component {
 
 	
 	render() {
+
 		return (
 			<div>
-				<h1>Rekisteröidy</h1>
+				<h1>
+					<FormattedMessage id="sign.register" defaultMessage="Register" />
+				</h1>
 
 				<SignupForm submit={this.submit} />
 			</div>

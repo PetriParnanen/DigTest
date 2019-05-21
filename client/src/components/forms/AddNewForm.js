@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { Form, Button, Message } from 'semantic-ui-react';
 import Validator from 'validator';
 import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import InlineError from '../fields/InlineError';
 
-export const ValidatePerson = (data) => {
+export const ValidatePerson = (data, intl ) => {
   const errors = {};
-  if (!data.name) errors.name = "Nimi on pakollinen";
-  if (!Validator.isEmail(data.email)) errors.email = "Virheellinen email";
+  if (!data.name) errors.name = intl.formatMessage({ id: 'error.mandatoryname'});
+  if (!Validator.isEmail(data.email)) errors.email = intl.formatMessage({ id: 'error.email'});
   if (!data.phone.match(/^[\d ]+$/)){
-    errors.phone = "Virheellinen puhelin";
+    errors.phone = intl.formatMessage({ id: 'error.phone' });
   }
   return errors;
 };
@@ -36,7 +37,8 @@ class AddNewForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { data } = this.state;
-    const errors = ValidatePerson(data);
+    const { intl } = this.props;
+    const errors = ValidatePerson(data, intl);
     this.setState({ errors });
     if (Object.keys(errors).length === 0){
       this.setState({ loading: true });
@@ -53,12 +55,15 @@ class AddNewForm extends React.Component {
     return (
       <Form onSubmit={this.onSubmit} loading={loading}>
         { errors.global && <Message negative>
-          <Message.Header>Something wrong</Message.Header>
+          <Message.Header>
+            <FormattedMessage id="new.globalerror" defaultMessage="Database error" />
+          </Message.Header>
           <p>{ errors.global }</p>
           </Message>
         }
         <Form.Field error={!!errors.name}>
-          <label htmlFor="name">Nimi
+          <label htmlFor="name">
+            <FormattedMessage id="new.name" defaultMessage="Name" />
           <input 
             type="text"
             id="name"
@@ -69,7 +74,8 @@ class AddNewForm extends React.Component {
             { errors.name && <InlineError text={errors.name} />}
         </Form.Field>
         <Form.Field error={!!errors.email}>
-          <label htmlFor="email">Email
+          <label htmlFor="email">
+            <FormattedMessage id="new.email" defaultMessage="Email" />
           <input 
             type="email"
             id="email"
@@ -81,26 +87,32 @@ class AddNewForm extends React.Component {
             { errors.email && <InlineError text={errors.email} />}
         </Form.Field>
         <Form.Field error={!!errors.phone}>
-          <label htmlFor="phone">Puhelin
+          <label htmlFor="phone">
+            <FormattedMessage id="new.phone" defaultMessage="Phonenumber" />
           <input 
             type="text"
             id="phone"
             name="phone"
-            placeholder="Muodossa 111 222 333"
+            placeholder="111 222 333"
             value={data.phone}
             onChange={this.onChange} />
           </label>
             { errors.phone && <InlineError text={errors.phone} />}
         </Form.Field>
-        <Button primary>Tallenna</Button>
-        <Link to="/persons"><Button secondary>Peruuta</Button></Link>
+        <Button primary>
+          <FormattedMessage id="new.savebutton" defaultMessage="Save" />
+        </Button>
+        <Link to="/persons"><Button secondary>
+          <FormattedMessage id="new.cancelbutton" defaultMessage="Cancel" />
+        </Button></Link>
       </Form>
     )
   }
 }
 
 AddNewForm.propTypes = {
-	submit: PropTypes.func.isRequired
+	submit: PropTypes.func.isRequired,
+  intl: intlShape.isRequired
 }
 
-export default AddNewForm;
+export default injectIntl(AddNewForm);

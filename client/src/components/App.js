@@ -21,7 +21,8 @@ const localeStyle = {
 
 const App = ({ location, lang, setLocaleAction }) => (
   <IntlProvider locale={lang} 
-  messages={messages[lang]}>
+  messages={messages[lang]}
+  key={lang} >
   <div className="App">
     <header className="App-header">
       <h1 className="App-title">
@@ -29,8 +30,8 @@ const App = ({ location, lang, setLocaleAction }) => (
       </h1>
     </header>
     <div style={ localeStyle }>
-      <button type="button" className="button primary" onClick={() => setLocaleAction('en')}>EN</button>
-      <button type="button" className="button primary" onClick={() => setLocaleAction('fi')}>FI</button>
+      <button type="button" className="ui button primary" onClick={() => setLocaleAction('en')}>EN</button>
+      <button type="button" className="ui button primary" onClick={() => setLocaleAction('fi')}>FI</button>
     </div>
     <div className="ui container">
       <Route location={location} path="/" exact component={HomePage} />

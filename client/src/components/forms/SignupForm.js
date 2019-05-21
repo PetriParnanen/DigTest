@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Validator from 'validator';
 import { Form, Button } from 'semantic-ui-react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import InlineError from "../fields/InlineError";
 
 class SignupForm extends React.Component {
@@ -36,8 +37,9 @@ class SignupForm extends React.Component {
 
 	validate = (data) => {
 		const errors = {};
-		if (!data.password) errors.password = "Salasana on pakollinen";
-		if (!Validator.isEmail(data.email)) errors.email = "Virheellinen sähköposti";
+		const { formatMessage } = this.props.intl;
+		if (!data.password) errors.password = formatMessage({ id: 'error.mandatorypassword'});
+		if (!Validator.isEmail(data.email)) errors.email = formatMessage({ id: 'error.email'});
 		return errors;
 	}
 
@@ -47,7 +49,8 @@ class SignupForm extends React.Component {
 		return (
 			<Form onSubmit={this.onSubmit} loading={loading}>
 				<Form.Field error={!!errors.email}>
-					<label htmlFor="email">Sähköpostiosoite
+					<label htmlFor="email">
+						<FormattedMessage id="sign.email" defaultMessage="Email" />
 					<input 
 						type="email" 
 						id="email" 
@@ -59,25 +62,29 @@ class SignupForm extends React.Component {
 						{ errors.email && <InlineError text={errors.email} />}
 				</Form.Field>
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Salasana
+					<label htmlFor="password">
+						<FormattedMessage id="sign.password" defaultMessage="Password" />
 					<input 
 						type="password" 
 						id="password" 
 						name="password" 
-						placeholder="Tee hyvä" 
+						placeholder="" 
 						value={data.password} 
 						onChange={this.onChange} />
 					</label>
 						{ errors.password && <InlineError text={errors.password} />}
 				</Form.Field>
-				<Button primary>Rekisteröidy</Button>
+				<Button primary>
+					<FormattedMessage id="sign.button" defaultMessage="Register" />
+				</Button>
 			</Form>
 		);
 	}
 }
 
 SignupForm.propTypes = {
-	submit: PropTypes.func.isRequired
+	submit: PropTypes.func.isRequired,
+	intl: intlShape.isRequired
 }
 
-export default SignupForm;
+export default injectIntl(SignupForm);

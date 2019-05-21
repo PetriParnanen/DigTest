@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Message, Icon } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 import { validateToken, resetPassword } from '../../actions/auth';
 import ResetPasswordForm from '../forms/ResetPasswordForm';
 
@@ -29,7 +30,9 @@ class ResetPasswordPage extends React.Component {
 				{ loading && (
 					<Message icon>
 						<Icon name="circle notched" loading />
-						<Message.Header>Loading</Message.Header>
+						<Message.Header>
+							<FormattedMessage id="loading" defaultMessage="Loading" />
+						</Message.Header>
 					</Message>
 					)}
 				{ !loading && success && <ResetPasswordForm submit={this.submit} token={match.params.token} />}
@@ -37,7 +40,9 @@ class ResetPasswordPage extends React.Component {
 					<Message negative icon>
 						<Icon name="warning sign" />
 						<Message.Content>
-							<Message.Header>Virheellinen linkki</Message.Header>
+							<Message.Header>
+								<FormattedMessage id="reset.incorrectlink" defaultMessage="Incorrect link" />
+							</Message.Header>
 						</Message.Content>
 					</Message>
 					)}

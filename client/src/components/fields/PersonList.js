@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { Grid, Button, Image } from 'semantic-ui-react';
+import { FormattedMessage } from 'react-intl';
 import { Editable } from './Editable';
 import { SortValues } from '../scripts/Sorter';
 import InlineError from './InlineError';
@@ -32,22 +33,26 @@ class PersonList extends React.Component {
         <div>&nbsp;</div>
         <Grid columns={5}>
           <Grid.Row key="header">
-            <Grid.Column width={2} className="hover" onClick={() => reSort("id")}><b>Id</b>{"  "}
+            <Grid.Column width={2} className="hover" onClick={() => reSort("id")}>
+              <b><FormattedMessage id="list.id" defaultMessage="Id" /></b>{"  "}
               {sortBy.field==="id" &&
                 <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
-            <Grid.Column width={5} className="hover" onClick={() => reSort("name")}><b>Nimi</b>{"  "}
+            <Grid.Column width={5} className="hover" onClick={() => reSort("name")}>
+              <b><FormattedMessage id="list.name" defaultMessage="Name" /></b>{"  "}
               {sortBy.field==="name" &&
                 <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
-            <Grid.Column width={5} className="hover" onClick={() => reSort("email")}><b>Sähköposti</b>{"  "}
+            <Grid.Column width={5} className="hover" onClick={() => reSort("email")}>
+              <b><FormattedMessage id="list.email" defaultMessage="Email" /></b>{"  "}
               {sortBy.field==="email" &&
                 <Image src={image} className="arrow" alt="arrow" inline />
               }
             </Grid.Column>
-            <Grid.Column width={3} className="hover" onClick={() => reSort("phone")}><b>Puhelin</b>{"  "}
+            <Grid.Column width={3} className="hover" onClick={() => reSort("phone")}>
+              <b><FormattedMessage id="list.phone" defaultMessage="Phone" /></b>{"  "}
               {sortBy.field==="phone" &&
                 <Image src={image} className="arrow" alt="arrow" inline />
               }
@@ -78,14 +83,18 @@ class PersonList extends React.Component {
                   <InlineError text={errors[val.id].phone} />}
             </Grid.Column>
             <Grid.Column key="delete" width={1}>
-              <Image src="./pics/trash.png" alt="poista" className="thrash hover" onClick={() => deleteRow(val._id)} />
+              <Image src="./pics/trash.png" alt="delete" className="thrash hover" onClick={() => deleteRow(val._id)} />
             </Grid.Column>
           </Grid.Row>
         ))}
           <Grid.Row columns={1} key="button">
             <Grid.Column key="button">
-              <Link to="/persons/addNew"><Button primary>Lisää uusi</Button></Link>
-              <button type="button" className="ui button secondary" onClick={ () => logout()}>Kirjaudu ulos</button>
+              <Link to="/persons/addNew"><Button primary>
+                <FormattedMessage id="list.buttonnew" defaultMessage="Add new" />
+              </Button></Link>
+              <button type="button" className="ui button secondary" onClick={ () => logout()}>
+                <FormattedMessage id="list.buttonlogout" defaultMessage="Logout" />
+              </button>
             </Grid.Column>
           </Grid.Row>
         </Grid>

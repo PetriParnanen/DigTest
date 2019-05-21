@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Button, Message } from 'semantic-ui-react';
 import Validator from 'validator';
 import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import InlineError from "../fields/InlineError";
 
 class LoginForm extends React.Component {
@@ -36,8 +37,9 @@ class LoginForm extends React.Component {
 
 	validate = (data) => {
 		const errors = {};
-		if (!data.password) errors.password = "Salasana on pakollinen";
-		if (!Validator.isEmail(data.email)) errors.email = "Virheellinen sähköposti";
+		const { formatMessage } = this.props.intl;
+		if (!data.password) errors.password = formatMessage({ id: 'error.mandatorypassword'});
+		if (!Validator.isEmail(data.email)) errors.email = formatMessage({ id: 'error.email'});
 		return errors;
 	};
 
@@ -48,12 +50,15 @@ class LoginForm extends React.Component {
 		return (
 			<Form onSubmit={this.onSubmit} loading={loading}>
 				{ errors.global && <Message negative>
-					<Message.Header>Jotain meni pieleen</Message.Header>
+					<Message.Header>
+						<FormattedMessage id="login.globalerror" defaultMessage="Something went wrong" />
+					</Message.Header>
 					<p>{ errors.global }</p>
 					</Message>
 				}
 				<Form.Field error={!!errors.email}>
-					<label htmlFor="email">Email
+					<label htmlFor="email">
+						<FormattedMessage id="login.email" defaultMessage="Email" />
 					<input 
 						type="email" 
 						id="email" 
@@ -65,25 +70,29 @@ class LoginForm extends React.Component {
 						{ errors.email && <InlineError text={errors.email} />}
 				</Form.Field>
 				<Form.Field error={!!errors.password}>
-					<label htmlFor="password">Salasana
+					<label htmlFor="password">
+						<FormattedMessage id="login.password" defaultMessage="Password" />
 					<input 
 						type="password" 
 						id="password" 
 						name="password" 
-						placeholder="Make it secure" 
+						placeholder="" 
 						value={data.password} 
 						onChange={this.onChange} />
 						</label>
 						{ errors.password && <InlineError text={errors.password} />}
 				</Form.Field>
-				<Button primary>Kirjaudu</Button>
+				<Button primary>
+					<FormattedMessage id="login.button" defaultMessage="Login" />
+				</Button>
 			</Form>
 		);
 	}
 }
 
 LoginForm.propTypes = {
-	submit: PropTypes.func.isRequired
+	submit: PropTypes.func.isRequired,
+	intl: intlShape.isRequired
 }
 
-export default LoginForm;
+export default injectIntl(LoginForm);
